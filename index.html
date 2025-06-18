@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Névoa da Ruína</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="game-container">
+    <div id="shelter" role="region" aria-label="Abrigo inicial">
+      <h2>Abrigo</h2>
+      <p>Você está no Abrigo, um local seguro em meio à névoa.</p>
+      <button class="shelter-button" onclick="startRun('Superfície')" aria-label="Explorar a Superfície">Explorar: Superfície</button>
+      <button class="shelter-button" onclick="startRun('Subterrâneo')" aria-label="Explorar o Subterrâneo">Explorar: Subterrâneo</button>
+      <button class="shelter-button" onclick="showCraftingMenu()" aria-label="Construir ou melhorar estruturas no Abrigo">Construir</button>
+      <button class="shelter-button" onclick="showCookingMenu()" aria-label="Cozinhar alimentos para recuperar recursos">Cozinhar</button>
+      <button class="shelter-button" onclick="showCombatMechanics()" aria-label="Ver mecânicas de combate">Ver Mecânicas de Combate</button>
+      <button class="shelter-button" onclick="showAchievementsMenu()" aria-label="Ver conquistas desbloqueadas">Ver Conquistas</button>
+      <button class="shelter-button" id="build-apothecary" onclick="buildApothecary()" aria-label="Construir Boticário: 3 Madeira, 2 Ervas">Construir Boticário</button>
+      <button class="shelter-button" id="build-tailory" onclick="buildTailory()" aria-label="Construir Alfaiataria: 4 Pele, 2 Madeira">Construir Alfaiataria</button>
+    </div>
+
+    <div id="map-choice" role="dialog" aria-label="Escolha do Mapa" style="display: none;">
+      <h2>Escolha o Mapa</h2>
+      <button class="shelter-button" onclick="startRun('Superfície')" aria-label="Explorar a Superfície">Superfície</button>
+      <button class="shelter-button" onclick="startRun('Subterrâneo')" aria-label="Explorar o Subterrâneo">Subterrâneo</button>
+    </div>
+
+    <div id="map" role="region" aria-label="Mapa de exploração" style="display: none;">
+      <button class="shelter-button" onclick="showEquipmentMenu()" aria-label="Gerenciar equipamento">Gerenciar Equipamento</button>
+    </div>
+
+    <div id="hand" style="display: none;" role="region" aria-label="Cartas na mão"></div>
+    <div id="enemy-hand" style="display: none;" role="region" aria-label="Ações do inimigo"></div>
+
+    <div id="crafting" role="dialog" aria-label="Menu de Construção e Crafting" style="display: none;">
+      <h2>Construção e Crafting</h2>
+      <ul id="crafting-list" aria-label="Lista de itens para construir ou criar"></ul>
+      <button class="shelter-button" onclick="closeCrafting()" aria-label="Fechar menu de construção">Fechar</button>
+    </div>
+
+    <div id="cooking" role="dialog" aria-label="Menu de Cozinha" style="display: none;">
+      <h2>Cozinha</h2>
+      <ul id="cooking-list" aria-label="Lista de receitas para cozinhar"></ul>
+      <button class="shelter-button" onclick="closeCooking()" aria-label="Fechar menu de cozinha">Fechar</button>
+    </div>
+
+    <div id="equipment-menu" role="dialog" aria-label="Menu de Equipamento" style="display: none;">
+      <h2>Gerenciar Equipamento</h2>
+      <p>Inventário: <span id="inventory-count">0</span>/<span id="inventory-limit">5</span></p>
+      <div id="equipment-slots">
+        <h3>Equipado</h3>
+        <p>Arma: <span id="equipped-weapon">Nenhuma</span> 
+          <span id="weapon-effects"></span>
+          <button id="unequip-weapon" disabled aria-label="Desmontar arma">Desmontar</button></p>
+        <p>Armadura: <span id="equipped-armor">Nenhuma</span> 
+          <span id="armor-effects"></span>
+          <button id="unequip-armor" disabled aria-label="Desmontar armadura">Desmontar</button></p>
+        <p>Relíquia: <span id="equipped-relic">Nenhuma</span> 
+          <span id="relic-effects"></span>
+          <button id="unequip-relic" disabled aria-label="Desmontar relíquia">Desmontar</button></p>
+      </div>
+      <div id="inventory-list">
+        <h3>Inventário</h3>
+        <ul id="inventory-items" aria-label="Itens no inventário"></ul>
+      </div>
+      <button class="shelter-button" onclick="closeEquipmentMenu()" aria-label="Fechar menu de equipamento">Fechar</button>
+    </div>
+
+    <div id="achievements-menu" role="dialog" aria-label="Menu de Conquistas" style="display: none;">
+      <h2>Conquistas</h2>
+      <ul id="achievements-list" aria-label="Lista de conquistas"></ul>
+      <button class="shelter-button" onclick="closeAchievements()" aria-label="Fechar menu de conquistas">Fechar</button>
+    </div>
+
+    <div id="combat-mechanics" role="dialog" aria-label="Mecânicas de Combate" style="display: none;">
+      <h2>Mecânicas de Combate</h2>
+      <p>Combate é baseado em cartas. Jogue cartas para atacar, bloquear ou aplicar efeitos. Gerencie Vigor Arcano e recursos com cuidado!</p>
+      <button class="shelter-button" onclick="closeCombatMechanics()" aria-label="Fechar mecânicas de combate">Fechar</button>
+    </div>
+
+    <div id="death-modal" role="dialog" aria-label="Tela de Morte" style="display: none;">
+      <h2>Fim de Jogo</h2>
+      <p id="death-message"></p>
+      <button class="shelter-button" onclick="restartGame()" aria-label="Reiniciar jogo">Reiniciar</button>
+    </div>
+
+    <div id="status" role="region" aria-label="Status do Jogador">
+      <p>Vida: <span id="player-hp">20</span>/<span id="player-max-hp">20</span></p>
+      <p>Sanidade: <span id="player-sanity">10</span>/<span id="player-max-sanity">10</span></p>
+      <p>Vigor Arcano: <span id="player-vigor">3</span>/<span id="player-max-vigor">3</span></p>
+      <p>Comida: <span id="player-food">2</span></p>
+      <p>Água Pura: <span id="player-water">2</span></p>
+      <p>Essências: <span id="player-essences">0</span></p>
+      <p>Sementes Sagradas: <span id="player-seeds">0</span></p>
+      <p>Madeira: <span id="player-wood">0</span></p>
+      <p>Metal: <span id="player-metal">0</span></p>
+      <p>Pele: <span id="player-leather">0</span></p>
+      <p>Ervas: <span id="player-herbs">0</span></p>
+      <p>Corrupção: <span id="player-corruption">0</span></p>
+      <p>Escamas Negras: <span id="player-scales">0</span></p>
+      <p>Arma: <span id="player-weapon">Nenhuma</span></p>
+      <p>Armadura: <span id="player-armor">Nenhuma</span></p>
+      <p>Relíquia: <span id="player-relic">Nenhuma</span></p>
+      <p>Efeitos: <span id="player-status">Nenhum</span></p>
+    </div>
+
+    <div id="log" role="log" aria-live="polite">Bem-vindo a Névoa da Ruína!</div>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
