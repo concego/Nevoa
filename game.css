@@ -1,0 +1,166 @@
+body {
+  background: #1a1a3a;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+#game-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1, h2, h3 {
+  color: #ff9999;
+}
+
+p {
+  margin: 10px 0;
+}
+
+.shelter-button {
+  background: #ff3333;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.shelter-button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+#status {
+  background: #2a2a4e;
+  padding: 10px;
+  border: 1px solid #fff;
+  margin-bottom: 20px;
+}
+
+#log {
+  background: #3a3a6e;
+  padding: 10px;
+  border: 1px solid #fff;
+  min-height: 100px;
+  text-align: left;
+}
+
+#hand, #enemy-hand {
+  margin: 20px 0;
+}
+
+.card {
+  background: #ff5555;
+  color: #fff;
+  padding: 10px;
+  margin: 5px;
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid #fff;
+}
+
+.card.disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+#map, #shelter, #map-choice, #crafting, #cooking, #equipment-menu, #achievements-menu, #combat-mechanics, #death-modal {
+  background: #2a2a4e;
+  border: 3px solid #fff;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+#equipment-menu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#equipment-menu.fade-in {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#equipment-menu.fade-out {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+#equipment-slots p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+#equipment-slots span[id$="-effects"] {
+  font-style: italic;
+  color: #ccc;
+  flex: 1 1 100%;
+}
+
+#inventory-items li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 5px 0;
+  padding: 5px;
+  border: 1px solid #fff;
+  background: #3a3a6e;
+}
+
+#inventory-items .item-effects {
+  font-style: italic;
+  color: #ccc;
+  flex: 1 1 100%;
+}
+
+#inventory-items button.discard {
+  background: #cc3333;
+  margin-left: 5px;
+}
+
+#crafting-list li, #cooking-list li {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #fff;
+  background: #3a3a6e;
+}
+
+#achievements-list li {
+  margin: 10px 0;
+}
+
+@media (max-width: 400px) {
+  body {
+    padding: 10px;
+  }
+  h2, #equipment-menu h2, #crafting h2, #cooking h2 {
+    font-size: 1.5rem;
+  }
+  h3, #equipment-menu h3 {
+    font-size: 1.2rem;
+  }
+  .shelter-button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+  #equipment-slots p, #inventory-items li, #crafting-list li, #cooking-list li {
+    font-size: 0.9rem;
+  }
+  #equipment-slots span[id$="-effects"], #inventory-items .item-effects {
+    font-size: 0.8rem;
+  }
+}
